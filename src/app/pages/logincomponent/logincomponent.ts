@@ -2,21 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+
 @Component({
   selector: 'app-logincomponent',
   standalone: false,
   templateUrl: './logincomponent.html',
-  styleUrl: './logincomponent.scss',
+  styleUrls: ['./logincomponent.scss'], // แก้จาก styleUrl เป็น styleUrls
 })
-
-export class Logincomponent {
+export class Logincomponent implements OnInit { // เพิ่ม implements OnInit
   loginForm!: FormGroup;
   showPassword = false;
   isSubmitting = false;
   successState = false;
-  apiUrl = 'http://localhost:3000/api/auth/login'; // <-- Node.js API URL
-constructor(
+  apiUrl = 'http://localhost:3000/api/auth/login'; // Node.js API URL
+
+  constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router
@@ -77,7 +77,8 @@ constructor(
       password: this.loginForm.value.password
     };
 
-    this.http.post<any>(`${this.apiUrl}/login`, body).subscribe({
+    // แก้ POST URL ให้ตรงกับ backend
+    this.http.post<any>(this.apiUrl, body).subscribe({
       next: (res) => {
         console.log('Login success:', res);
 
