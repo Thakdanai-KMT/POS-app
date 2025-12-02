@@ -65,46 +65,45 @@
       }
 
       // ======================= FORM LOGIC ========================
-      submitForm() {
-        if (this.isSubmitting) return;
-        if (this.loginForm.invalid) {
-          this.shakeForm();
-          return;
-        }
+submitForm() {
+  if (this.isSubmitting) return;
+  if (this.loginForm.invalid) {
+    this.shakeForm();
+    return;
+  }
 
-        this.isSubmitting = true;
+  this.isSubmitting = true;
 
-        const { loginId, password, remember } = this.loginForm.value;
+  const { loginId, password, remember } = this.loginForm.value;
 
-        this.loginService.login(loginId, password).subscribe({
-          next: (res: any) => {
-            console.log('Login success:', res);
+  this.loginService.login(loginId, password).subscribe({
+    next: (res) => {
+      console.log('Login success:', res);
 
-            // เก็บ Tokens
-            if (remember) {
-              localStorage.setItem('access_token', res.access_token);
-              localStorage.setItem('refresh_token', res.refresh_token);
-            } else {
-              sessionStorage.setItem('access_token', res.access_token);
-              sessionStorage.setItem('refresh_token', res.refresh_token);
-            }
-
-            this.successState = true;
-            this.isSubmitting = false;
-
-            setTimeout(() => {
-              this.router.navigate(['/home']);
-            }, 1500);
-          },
-
-          error: (err) => {
-            console.error('Login error', err);
-            alert(err.error?.message || 'Login failed');
-            this.isSubmitting = false;
-            this.shakeForm();
-          }
-        });
+      // เก็บ Token
+      const token = res.access_token; // ใช้ access_token ที่ได้จาก API
+      if (remember) {
+        localStorage.setItem('token', token);
+      } else {
+        sessionStorage.setItem('token', token);
       }
+
+      this.successState = true;
+      this.isSubmitting = false;
+
+      // Navigate ไปหน้า home ทันที
+      this.router.navigate(['/home']);
+    },
+
+    error: (err) => {
+      console.error('Login error', err);
+      alert(err.error?.message || 'Login failed');
+      this.isSubmitting = false;
+      this.shakeForm();
+    }
+  });
+}
+
 
 
       get f() {

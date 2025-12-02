@@ -9,14 +9,14 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(): boolean {
+    // ตรวจสอบทั้ง localStorage และ sessionStorage
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
 
-    const isLoggedIn = localStorage.getItem('token'); // สมมติว่าคุณเก็บ tokenไว้
-
-    if (isLoggedIn) {
+    if (token) {
       return true; // อนุญาตให้เข้า
     }
 
-    // ถ้าไม่ login ให้กลับไปหน้า login
+    // ถ้าไม่มี token ให้กลับไปหน้า login
     this.router.navigate(['/login']);
     return false;
   }
