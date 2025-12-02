@@ -20,7 +20,7 @@
           <label>Username / Email / Phone</label>
           <span class="focus-border"></span>
         </div>
-        <span class="error-message" *ngIf="f.loginId.invalid && f.loginId.touched">
+        <span class="error-message" *ngIf="f['loginId'].invalid && f['loginId'].touched">
           Username is required
         </span>
       </div>
@@ -40,7 +40,7 @@
           </button>
           <span class="focus-border"></span>
         </div>
-        <span class="error-message" *ngIf="f.password.invalid && f.password.touched">
+        <span class="error-message" *ngIf="f['password'].invalid && f['password'].touched">
           Password is required (min 6 characters)
         </span>
       </div>

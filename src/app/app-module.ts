@@ -7,6 +7,7 @@ import { Homecomponent } from './pages/home/homecomponent';
 // import { Logincomponent1 } from './pages/login1/logincomponent1';
 import { Logincomponent  } from './pages/logincomponent/logincomponent';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,8 +18,9 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule   
-    // Logincomponent
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
