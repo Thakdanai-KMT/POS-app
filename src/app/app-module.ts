@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { Homecomponent } from './pages/home/homecomponent';
+import { DashboardComponent,  } from './pages/dashboard/dashboard.component';
 // import { Logincomponent1 } from './pages/login1/logincomponent1';
 import { Logincomponent  } from './pages/logincomponent/logincomponent';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,7 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     App,
-    Homecomponent,
+    DashboardComponent,
     Logincomponent
   ],
   imports: [

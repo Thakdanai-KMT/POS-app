@@ -1,6 +1,6 @@
 import { NgModule, } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Homecomponent } from './pages/home/homecomponent';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
 import { Logincomponent } from './pages/logincomponent/logincomponent';
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'login', component: Logincomponent,canActivate: [LoginGuard] },
 
   // ป้องกันหน้าอื่นด้วย AuthGuard
-  { path: 'home', component: Homecomponent, canActivate: [AuthGuard] },
+  { path: 'home', component: DashboardComponent, canActivate: [AuthGuard] },
 
   // ถ้า path ไม่ตรง ให้กลับไป login
   { path: '**', redirectTo: 'login' }
