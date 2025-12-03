@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate {
     if (token) {
       return true; // อนุญาตให้เข้า
     }
+  console.log('AuthGuard token = ', localStorage.getItem('token') || sessionStorage.getItem('token'));
 
     // ถ้าไม่มี token ให้กลับไปหน้า login
     this.router.navigate(['/login']);
