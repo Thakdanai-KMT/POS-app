@@ -8,12 +8,14 @@ import { DashboardComponent,  } from './pages/dashboard/dashboard.component';
 import { Logincomponent  } from './pages/logincomponent/logincomponent';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Sidebar } from './service/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     App,
     DashboardComponent,
-    Logincomponent
+    Logincomponent,
+    Sidebar
   ],
   imports: [
     BrowserModule,
