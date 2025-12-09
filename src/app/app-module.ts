@@ -9,13 +9,15 @@ import { Logincomponent  } from './pages/logincomponent/logincomponent';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Sidebar } from './service/sidebar/sidebar.component';
+import { NotificationComponent } from './service/notification.component/notification.component';
 
 @NgModule({
   declarations: [
     App,
     DashboardComponent,
     Logincomponent,
-    Sidebar
+    Sidebar,
+    NotificationComponent
   ],
   imports: [
     BrowserModule,
