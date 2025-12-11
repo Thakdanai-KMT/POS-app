@@ -9,7 +9,7 @@ import { Logincomponent  } from './pages/logincomponent/logincomponent';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Sidebar } from './service/sidebar/sidebar.component';
-import { NotificationComponent } from './service/notification.component/notification.component';
+import { NotificationComponent } from './service/notification/notification.component';
 
 @NgModule({
   declarations: [
