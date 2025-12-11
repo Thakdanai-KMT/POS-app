@@ -105,7 +105,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.checkAuth();
     this.animateCards();
+  document.body.classList.add('dashboard-bg');
+
   }
+
+
+ngOnDestroy() {
+  document.body.classList.remove('dashboard-bg');
+}
 
   checkAuth(): void {
     const token = localStorage.getItem('token') || sessionStorage.getItem('token');

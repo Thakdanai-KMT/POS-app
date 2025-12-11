@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-sidebar',
   standalone: false,
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css',
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class Sidebar {
 
