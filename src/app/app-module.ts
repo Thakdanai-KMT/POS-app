@@ -2,21 +2,20 @@ import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
-import { App } from './app';
+import { AppComponent } from './app.component';
 import { DashboardComponent,  } from './pages/dashboard/dashboard.component';
-// import { Logincomponent1 } from './pages/login1/logincomponent1';
-import { Logincomponent  } from './pages/logincomponent/logincomponent';
+import { LoginComponent    } from './pages/logincomponent/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Sidebar,  } from './service/sidebar/sidebar.component';
+import { SidebarComponent,  } from './service/sidebar/sidebar.component';
 import { NotificationComponent } from './service/notification/notification.component';
 
 @NgModule({
   declarations: [
-    App,
+    AppComponent,
     DashboardComponent,
-    Logincomponent,
-    Sidebar,
+    LoginComponent ,
+    SidebarComponent,
     NotificationComponent
   ],
   imports: [
@@ -29,6 +28,6 @@ import { NotificationComponent } from './service/notification/notification.compo
   providers: [
     provideBrowserGlobalErrorListeners()
   ],
-  bootstrap: [App]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

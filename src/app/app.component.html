@@ -1,0 +1,5 @@
+<!-- แสดง Sidebar เฉพาะเมื่อไม่ได้อยู่ที่หน้า login -->
+<app-sidebar *ngIf="!isLoginPage()"></app-sidebar>
+
+<!-- Router Outlet สำหรับแสดง component ต่างๆ -->
+<router-outlet></router-outlet>

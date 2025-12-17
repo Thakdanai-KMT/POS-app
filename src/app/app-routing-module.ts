@@ -3,14 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
 import { HttpClientModule } from '@angular/common/http';
-import { Logincomponent } from './pages/logincomponent/logincomponent';
+import { LoginComponent  } from './pages/logincomponent/login.component';
 import { LoginGuard } from './guards/Login.Guard';
 
 // import{ProductListComponent} from './';
 // const routes: Routes = [];
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: Logincomponent,canActivate: [LoginGuard] },
+  { path: 'login', component: LoginComponent ,canActivate: [LoginGuard] },
 
   // ป้องกันหน้าอื่นด้วย AuthGuard
   { path: 'home', component: DashboardComponent, canActivate: [AuthGuard] },
