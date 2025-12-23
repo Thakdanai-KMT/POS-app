@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginService.login(loginId, password).subscribe({
       next: (res) => {
         const token = res.access_token;
-
+console.log('Sending login request:', { loginId, password });
         if (remember) {
           localStorage.setItem('authToken', token);
         } else {
