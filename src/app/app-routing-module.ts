@@ -21,7 +21,7 @@ const routes: Routes = [
   // หลัง Login (มี sidebar)
   {
     path: '',
-    component: DashboardComponent,
+    component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent },
