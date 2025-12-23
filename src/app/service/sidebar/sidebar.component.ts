@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
+import { Component, EventEmitter, Output, OnInit, OnDestroy } from '@angular/core';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 interface MenuItem {
   icon: string;
@@ -11,18 +13,20 @@ interface MenuItem {
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
-    standalone: false,
+  standalone: false,
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
   isCollapsed = false;
   activeRoute = 'dashboard';
+  private routerSubscription?: Subscription;
   
   menuItems: MenuItem[] = [
     { icon: 'dashboard', label: 'Dashboard', route: 'dashboard' },
     { icon: 'analytics', label: 'Analytics', route: 'analytics' },
-    { icon: 'inventory', label: 'Projects', route: 'projects', badge: 3 },
-    { icon: 'people', label: 'Team', route: 'team' },
+    { icon: 'inventory', label: 'Products', route: 'products' },
+    { icon: 'shopping_cart', label: 'Orders', route: 'orders', badge: 5 },
+    { icon: 'people', label: 'Customers', route: 'customers' },
     { icon: 'settings', label: 'Settings', route: 'settings' },
   ];
 
@@ -32,24 +36,57 @@ export class SidebarComponent implements OnInit {
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John'
   };
 
+  @Output() collapsedChange = new EventEmitter<boolean>();
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.activeRoute = this.router.url.split('/')[1] || 'dashboard';
+    // Set initial active route
+    this.updateActiveRoute(this.router.url);
+    
+    // Subscribe to route changes
+    this.routerSubscription = this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.updateActiveRoute(event.urlAfterRedirects || event.url);
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  private updateActiveRoute(url: string): void {
+    const routeParts = url.split('/').filter(part => part);
+    this.activeRoute = routeParts[0] || 'dashboard';
   }
 
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
+    this.collapsedChange.emit(this.isCollapsed);
   }
 
   navigateTo(route: string): void {
-    this.activeRoute = route;
-    this.router.navigate([`/${route}`]);
+    // this.router.navigate([`/${route}`]);
+  }
+
+  isActive(route: string): boolean {
+    return this.activeRoute === route;
   }
 
   logout(): void {
-    // เคลียร์ token หรือข้อมูล authentication
+    console.log('Logging out...');
+    
+    // Clear all authentication data
     localStorage.removeItem('authToken');
-    this.router.navigate(['/login']);
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+    
+    // Navigate to login
+    this.router.navigate(['/login']).then(() => {
+      console.log('Redirected to login');
+    });
   }
 }

@@ -3,15 +3,42 @@
   <header class="dashboard-header">
     <div class="header-content">
       <div>
-        <h1 class="page-title">Dashboard</h1>
-        <p class="page-subtitle">Welcome back! Here's what's happening today.</p>
+        <h1 class="page-title">ระบบจัดการร้านค้า</h1>
+        <p class="page-subtitle">ภาพรวมยอดขายและสินค้าคงคลัง</p>
       </div>
-      <button class="add-btn">
-        <span class="material-icons">add</span>
-        <span>New Project</span>
-      </button>
+      <div class="header-actions">
+        <button class="add-btn">
+          <span class="material-icons">receipt_long</span>
+          <span>สร้างออเดอร์</span>
+        </button>
+      </div>
     </div>
   </header>
+
+  <!-- Period Selector -->
+  <div class="period-selector">
+    <button 
+      class="period-btn" 
+      [class.active]="selectedPeriod === 'daily'"
+      (click)="changePeriod('daily')">
+      <span class="material-icons">today</span>
+      <span>รายวัน</span>
+    </button>
+    <button 
+      class="period-btn" 
+      [class.active]="selectedPeriod === 'monthly'"
+      (click)="changePeriod('monthly')">
+      <span class="material-icons">calendar_month</span>
+      <span>รายเดือน</span>
+    </button>
+    <button 
+      class="period-btn" 
+      [class.active]="selectedPeriod === 'yearly'"
+      (click)="changePeriod('yearly')">
+      <span class="material-icons">calendar_today</span>
+      <span>รายปี</span>
+    </button>
+  </div>
 
   <!-- Stats Grid -->
   <section class="stats-grid">
@@ -24,7 +51,7 @@
         <h3 class="stat-value">{{ stat.value }}</h3>
         <div class="stat-change" [class.positive]="stat.isPositive" [class.negative]="!stat.isPositive">
           <span class="material-icons">{{ stat.isPositive ? 'trending_up' : 'trending_down' }}</span>
-          <span>{{ stat.change }} from last month</span>
+          <span>{{ stat.change }} จากช่วงก่อน</span>
         </div>
       </div>
     </div>
@@ -32,72 +59,166 @@
 
   <!-- Main Content -->
   <div class="content-grid">
-    <!-- Projects Section -->
-    <section class="projects-section">
+    <!-- Top Products Section -->
+    <section class="products-section">
       <div class="section-header">
-        <h2 class="section-title">Active Projects</h2>
-        <a href="#" class="view-all">View all →</a>
+        <h2 class="section-title">
+          <span class="material-icons">star</span>
+          สินค้าขายดี TOP 5
+        </h2>
+        <a href="#" class="view-all">ดูทั้งหมด →</a>
       </div>
-      <div class="projects-list">
-        <div *ngFor="let project of projects" class="project-card">
-          <div class="project-header">
-            <div>
-              <h3 class="project-name">{{ project.name }}</h3>
-              <span class="project-status" [ngClass]="getStatusClass(project.status)">
-                {{ project.status }}
+      <div class="products-table">
+        <div class="table-header">
+          <div class="th-product">สินค้า</div>
+          <div class="th-category">หมวดหมู่</div>
+          <div class="th-price">ราคา</div>
+          <div class="th-sold">ขายแล้ว</div>
+          <div class="th-stock">คงเหลือ</div>
+          <div class="th-trend">แนวโน้ม</div>
+        </div>
+        <div class="table-body">
+          <div *ngFor="let product of topProducts; let i = index" class="product-row">
+            <div class="td-product">
+              <span class="product-rank">#{{ i + 1 }}</span>
+              <span class="product-emoji">{{ product.image }}</span>
+              <div class="product-info">
+                <span class="product-name">{{ product.name }}</span>
+              </div>
+            </div>
+            
+            <!-- Desktop view -->
+            <div class="td-category desktop-only">
+              <span class="category-badge">{{ product.category }}</span>
+            </div>
+            <div class="td-price desktop-only">฿{{ product.price }}</div>
+            <div class="td-sold desktop-only">
+              <span class="sold-badge">{{ product.sold }} ชิ้น</span>
+            </div>
+            <div class="td-stock desktop-only" [class.low-stock]="product.stock < 100">
+              {{ product.stock }}
+            </div>
+            <div class="td-trend desktop-only">
+              <span class="trend-icon" [style.color]="getTrendColor(product.trend)">
+                <span class="material-icons">{{ getTrendIcon(product.trend) }}</span>
               </span>
             </div>
-            <button class="icon-btn">
-              <span class="material-icons">more_vert</span>
-            </button>
-          </div>
-          
-          <div class="progress-section">
-            <div class="progress-header">
-              <span class="progress-label">Progress</span>
-              <span class="progress-value">{{ project.progress }}%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" 
-                   [style.width.%]="project.progress"
-                   [style.background]="getProgressColor(project.progress)">
-              </div>
-            </div>
-          </div>
 
-          <div class="project-footer">
-            <div class="team-avatars">
-              <img *ngFor="let avatar of project.team" 
-                   [src]="avatar" 
-                   alt="Team member" 
-                   class="team-avatar" />
-              <div class="avatar-more" *ngIf="project.team.length > 3">
-                +{{ project.team.length - 3 }}
+            <!-- Mobile view -->
+            <div class="product-mobile-details mobile-only">
+              <div class="td-category">
+                <span class="mobile-label">หมวดหมู่</span>
+                <span class="category-badge">{{ product.category }}</span>
+              </div>
+              <div class="td-price">
+                <span class="mobile-label">ราคา</span>
+                <span>฿{{ product.price }}</span>
+              </div>
+              <div class="td-sold">
+                <span class="mobile-label">ขายแล้ว</span>
+                <span class="sold-badge">{{ product.sold }} ชิ้น</span>
+              </div>
+              <div class="td-stock" [class.low-stock]="product.stock < 100">
+                <span class="mobile-label">คงเหลือ</span>
+                <span>{{ product.stock }}</span>
               </div>
             </div>
-            <div class="deadline">
-              <span class="material-icons">event</span>
-              <span>{{ project.deadline }}</span>
-            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="quick-stats">
+        <div class="quick-stat-item">
+          <span class="material-icons">inventory_2</span>
+          <div>
+            <span class="quick-stat-value">1,245</span>
+            <span class="quick-stat-label">สินค้าทั้งหมด</span>
+          </div>
+        </div>
+        <div class="quick-stat-item">
+          <span class="material-icons">warning</span>
+          <div>
+            <span class="quick-stat-value">23</span>
+            <span class="quick-stat-label">สินค้าใกล้หมด</span>
+          </div>
+        </div>
+        <div class="quick-stat-item">
+          <span class="material-icons">remove_shopping_cart</span>
+          <div>
+            <span class="quick-stat-value">8</span>
+            <span class="quick-stat-label">สินค้าหมด</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Activity Feed -->
-    <section class="activity-section">
+    <!-- Recent Orders -->
+    <section class="orders-section">
       <div class="section-header">
-        <h2 class="section-title">Recent Activity</h2>
+        <h2 class="section-title">
+          <span class="material-icons">receipt</span>
+          ออเดอร์ล่าสุด
+        </h2>
+        <a href="#" class="view-all">ดูทั้งหมด →</a>
       </div>
-      <div class="activity-list">
-        <div *ngFor="let activity of recentActivities" class="activity-item">
-          <img [src]="activity.avatar" alt="User avatar" class="activity-avatar" />
-          <div class="activity-content">
-            <p class="activity-text">
-              <strong>{{ activity.user }}</strong> {{ activity.action }}
-            </p>
-            <span class="activity-time">{{ activity.time }}</span>
+      <div class="orders-list">
+        <div *ngFor="let order of recentOrders" class="order-card">
+          <div class="order-header">
+            <div class="order-id-section">
+              <span class="order-id">{{ order.id }}</span>
+              <span class="order-time">{{ order.time }}</span>
+            </div>
+            <span class="order-status" [ngClass]="getStatusClass(order.status)">
+              {{ getStatusText(order.status) }}
+            </span>
           </div>
+          <div class="order-content">
+            <div class="customer-info">
+              <span class="material-icons">person</span>
+              <span class="customer-name">{{ order.customerName }}</span>
+            </div>
+            <div class="order-details">
+              <div class="order-detail-item">
+                <span class="material-icons">shopping_basket</span>
+                <span>{{ order.items }} รายการ</span>
+              </div>
+              <div class="order-detail-item total">
+                <span class="material-icons">payments</span>
+                <span class="order-total">฿{{ order.total }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="order-actions">
+            <button class="action-btn" *ngIf="order.status === 'pending'">
+              <span class="material-icons">check_circle</span>
+              รับออเดอร์
+            </button>
+            <button class="action-btn" *ngIf="order.status === 'processing'">
+              <span class="material-icons">local_shipping</span>
+              พร้อมส่ง
+            </button>
+            <button class="action-btn view-btn">
+              <span class="material-icons">visibility</span>
+              ดูรายละเอียด
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Orders Summary -->
+      <div class="orders-summary">
+        <div class="summary-item">
+          <span class="summary-label">รอดำเนินการ</span>
+          <span class="summary-value pending-value">12</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">กำลังจัดเตรียม</span>
+          <span class="summary-value processing-value">8</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-label">สำเร็จวันนี้</span>
+          <span class="summary-value completed-value">48</span>
         </div>
       </div>
     </section>

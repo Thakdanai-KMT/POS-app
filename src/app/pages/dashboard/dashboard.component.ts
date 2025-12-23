@@ -9,132 +9,241 @@ interface StatCard {
   color: string;
 }
 
-interface Activity {
-  id: number;
-  user: string;
-  action: string;
-  time: string;
-  avatar: string;
-}
-
-interface Project {
+interface Product {
   id: number;
   name: string;
-  progress: number;
-  status: 'active' | 'completed' | 'pending';
-  deadline: string;
-  team: string[];
+  category: string;
+  price: number;
+  sold: number;
+  stock: number;
+  image: string;
+  trend: 'up' | 'down' | 'stable';
+}
+
+interface Order {
+  id: string;
+  customerName: string;
+  items: number;
+  total: number;
+  status: 'pending' | 'processing' | 'completed' | 'cancelled';
+  time: string;
+}
+
+interface SalesData {
+  period: string;
+  amount: number;
 }
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  standalone: false,
+      standalone: false,
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  stats: StatCard[] = [
-    {
-      title: 'Total Revenue',
-      value: '$45,231',
-      change: '+12.5%',
-      isPositive: true,
-      icon: 'attach_money',
-      color: 'purple'
-    },
-    {
-      title: 'Active Users',
-      value: '2,345',
-      change: '+8.2%',
-      isPositive: true,
-      icon: 'people',
-      color: 'blue'
-    },
-    {
-      title: 'Projects',
-      value: '24',
-      change: '-2.4%',
-      isPositive: false,
-      icon: 'folder',
-      color: 'green'
-    },
-    {
-      title: 'Conversion Rate',
-      value: '3.24%',
-      change: '+5.1%',
-      isPositive: true,
-      icon: 'trending_up',
-      color: 'orange'
-    }
-  ];
+  selectedPeriod: 'daily' | 'monthly' | 'yearly' = 'daily';
 
-  recentActivities: Activity[] = [
+  // Stats สำหรับแต่ละช่วงเวลา
+  statsData = {
+    daily: [
+      {
+        title: 'ยอดขายวันนี้',
+        value: '฿12,450',
+        change: '+15.3%',
+        isPositive: true,
+        icon: 'payments',
+        color: 'purple'
+      },
+      {
+        title: 'ออเดอร์วันนี้',
+        value: '48',
+        change: '+8.2%',
+        isPositive: true,
+        icon: 'shopping_cart',
+        color: 'blue'
+      },
+      {
+        title: 'ลูกค้าใหม่',
+        value: '12',
+        change: '+25%',
+        isPositive: true,
+        icon: 'person_add',
+        color: 'green'
+      },
+      {
+        title: 'มูลค่าเฉลี่ย/ออเดอร์',
+        value: '฿259',
+        change: '-2.4%',
+        isPositive: false,
+        icon: 'account_balance_wallet',
+        color: 'orange'
+      }
+    ],
+    monthly: [
+      {
+        title: 'ยอดขายเดือนนี้',
+        value: '฿348,900',
+        change: '+22.5%',
+        isPositive: true,
+        icon: 'payments',
+        color: 'purple'
+      },
+      {
+        title: 'ออเดอร์เดือนนี้',
+        value: '1,245',
+        change: '+18.7%',
+        isPositive: true,
+        icon: 'shopping_cart',
+        color: 'blue'
+      },
+      {
+        title: 'ลูกค้าใหม่',
+        value: '287',
+        change: '+31%',
+        isPositive: true,
+        icon: 'person_add',
+        color: 'green'
+      },
+      {
+        title: 'มูลค่าเฉลี่ย/ออเดอร์',
+        value: '฿280',
+        change: '+3.2%',
+        isPositive: true,
+        icon: 'account_balance_wallet',
+        color: 'orange'
+      }
+    ],
+    yearly: [
+      {
+        title: 'ยอดขายปีนี้',
+        value: '฿4.2M',
+        change: '+35.8%',
+        isPositive: true,
+        icon: 'payments',
+        color: 'purple'
+      },
+      {
+        title: 'ออเดอร์ปีนี้',
+        value: '14,567',
+        change: '+28.3%',
+        isPositive: true,
+        icon: 'shopping_cart',
+        color: 'blue'
+      },
+      {
+        title: 'ลูกค้าทั้งหมด',
+        value: '3,421',
+        change: '+42%',
+        isPositive: true,
+        icon: 'groups',
+        color: 'green'
+      },
+      {
+        title: 'มูลค่าเฉลี่ย/ออเดอร์',
+        value: '฿288',
+        change: '+5.7%',
+        isPositive: true,
+        icon: 'account_balance_wallet',
+        color: 'orange'
+      }
+    ]
+  };
+
+  stats: StatCard[] = this.statsData.daily;
+
+  topProducts: Product[] = [
     {
       id: 1,
-      user: 'Sarah Johnson',
-      action: 'completed task "Design Review"',
-      time: '2 minutes ago',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah'
+      name: 'น้ำดื่ม 600ml',
+      category: 'เครื่องดื่ม',
+      price: 10,
+      sold: 145,
+      stock: 500,
+      image: '🥤',
+      trend: 'up'
     },
     {
       id: 2,
-      user: 'Mike Chen',
-      action: 'uploaded new file to project',
-      time: '15 minutes ago',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Mike'
+      name: 'มาม่ากึ่งสำเร็จรูป',
+      category: 'อาหารแห้ง',
+      price: 12,
+      sold: 132,
+      stock: 320,
+      image: '🍜',
+      trend: 'up'
     },
     {
       id: 3,
-      user: 'Emma Wilson',
-      action: 'commented on "Q4 Report"',
-      time: '1 hour ago',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma'
+      name: 'ขนมปังแซนวิช',
+      category: 'เบเกอรี่',
+      price: 35,
+      sold: 98,
+      stock: 150,
+      image: '🥪',
+      trend: 'stable'
     },
     {
       id: 4,
-      user: 'David Lee',
-      action: 'created new project "Mobile App"',
-      time: '3 hours ago',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=David'
+      name: 'นมกล่อง UHT',
+      category: 'นมและโยเกิร์ต',
+      price: 18,
+      sold: 87,
+      stock: 200,
+      image: '🥛',
+      trend: 'up'
+    },
+    {
+      id: 5,
+      name: 'ไข่ไก่ (ฟอง)',
+      category: 'อาหารสด',
+      price: 5,
+      sold: 76,
+      stock: 180,
+      image: '🥚',
+      trend: 'down'
     }
   ];
 
-  projects: Project[] = [
+  recentOrders: Order[] = [
     {
-      id: 1,
-      name: 'Website Redesign',
-      progress: 75,
-      status: 'active',
-      deadline: '2024-12-30',
-      team: [
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=3'
-      ]
-    },
-    {
-      id: 2,
-      name: 'Mobile App Development',
-      progress: 45,
-      status: 'active',
-      deadline: '2025-01-15',
-      team: [
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=5'
-      ]
-    },
-    {
-      id: 3,
-      name: 'Marketing Campaign',
-      progress: 100,
+      id: 'ORD-2024-001',
+      customerName: 'คุณสมชาย ใจดี',
+      items: 8,
+      total: 245,
       status: 'completed',
-      deadline: '2024-12-15',
-      team: [
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=6',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=7',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=8',
-        'https://api.dicebear.com/7.x/avataaars/svg?seed=9'
-      ]
+      time: '5 นาทีที่แล้ว'
+    },
+    {
+      id: 'ORD-2024-002',
+      customerName: 'คุณสมหญิง รักสุข',
+      items: 5,
+      total: 180,
+      status: 'processing',
+      time: '12 นาทีที่แล้ว'
+    },
+    {
+      id: 'ORD-2024-003',
+      customerName: 'คุณประยุทธ มั่นคง',
+      items: 12,
+      total: 420,
+      status: 'pending',
+      time: '18 นาทีที่แล้ว'
+    },
+    {
+      id: 'ORD-2024-004',
+      customerName: 'คุณวิภา สวยงาม',
+      items: 3,
+      total: 95,
+      status: 'completed',
+      time: '25 นาทีที่แล้ว'
+    },
+    {
+      id: 'ORD-2024-005',
+      customerName: 'คุณสุชาติ ขยัน',
+      items: 15,
+      total: 580,
+      status: 'processing',
+      time: '35 นาทีที่แล้ว'
     }
   ];
 
@@ -144,14 +253,34 @@ export class DashboardComponent implements OnInit {
     // เรียก API หรือ service ต่างๆ ที่ต้องการ
   }
 
-  getProgressColor(progress: number): string {
-    if (progress >= 75) return '#22c55e';
-    if (progress >= 50) return '#06b6d4';
-    if (progress >= 25) return '#f59e0b';
-    return '#ef4444';
+  changePeriod(period: 'daily' | 'monthly' | 'yearly'): void {
+    this.selectedPeriod = period;
+    this.stats = this.statsData[period];
   }
 
   getStatusClass(status: string): string {
     return `status-${status}`;
+  }
+
+  getStatusText(status: string): string {
+    const statusMap: { [key: string]: string } = {
+      'pending': 'รอดำเนินการ',
+      'processing': 'กำลังจัดเตรียม',
+      'completed': 'สำเร็จ',
+      'cancelled': 'ยกเลิก'
+    };
+    return statusMap[status] || status;
+  }
+
+  getTrendIcon(trend: string): string {
+    if (trend === 'up') return 'trending_up';
+    if (trend === 'down') return 'trending_down';
+    return 'trending_flat';
+  }
+
+  getTrendColor(trend: string): string {
+    if (trend === 'up') return '#22c55e';
+    if (trend === 'down') return '#ef4444';
+    return '#94a3b8';
   }
 }

@@ -1,27 +1,38 @@
-import { NgModule, } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { LoginComponent } from './pages/logincomponent/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
+
 import { AuthGuard } from './guards/auth.guard';
-import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent  } from './pages/logincomponent/login.component';
 import { LoginGuard } from './guards/Login.Guard';
 
-// import{ProductListComponent} from './';
-// const routes: Routes = [];
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent ,canActivate: [LoginGuard] },
 
-  // ป้องกันหน้าอื่นด้วย AuthGuard
-  { path: 'home', component: DashboardComponent, canActivate: [AuthGuard] },
+  // หน้า Login (ไม่มี sidebar)
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [LoginGuard],
+  },
 
-  // ถ้า path ไม่ตรง ให้กลับไป login
-  { path: '**', redirectTo: 'login' }
+  // หลัง Login (มี sidebar)
+  {
+    path: '',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'dashboard', component: DashboardComponent },
+    ],
+  },
+
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
-export class AppRoutingModule { }
+export class AppRoutingModule {}

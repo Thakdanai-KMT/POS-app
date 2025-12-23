@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent,  } from './service/sidebar/sidebar.component';
 import { NotificationComponent } from './service/notification/notification.component';
+import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { NotificationComponent } from './service/notification/notification.compo
     DashboardComponent,
     LoginComponent ,
     SidebarComponent,
-    NotificationComponent
+    NotificationComponent,
+    MainLayoutComponent
   ],
   imports: [
     BrowserModule,

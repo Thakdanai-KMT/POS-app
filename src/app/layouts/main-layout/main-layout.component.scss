@@ -1,0 +1,26 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* content ปกติ */
+.main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 24px;
+}
+
+/* ตอน sidebar หุบ */
+.main-content.collapsed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+}
